@@ -6,11 +6,13 @@
  *	3. finds the word from an array of words with the highest score
  *	4. calculates the score of a word according to a table
  *
- *	Uses the FileUtils and Prompt classes.
+ *	Uses the FileUtils and Prompt classes, modified from EveryWord
  *	
  *	@author Jason He
  *	@since	10/17/2025
  */
+ 
+/// TODO: line 105, 136
  
 public class WordUtils
 {
@@ -21,22 +23,25 @@ public class WordUtils
 	private final String WORD_FILE = "wordList.txt";
 	
 	/* Constructor */
-	public WordUtils() { 
-		words = new String[100000]; // Large array to hold dictionary
+	public WordUtils() 
+	{ 
+		words = new String[100000]; // large array to hold whole dictionary
 		numWords = 0;
 	}
 	
 	/**	Load all of the dictionary from a file into words array. */
-	private void loadWords () { 
+	private void loadWords () 
+	{ 
 		java.util.Scanner input = FileUtils.openToRead(WORD_FILE);
 		numWords = 0;
 		
-		while (input.hasNext() && numWords < words.length) {
+		while (input.hasNext() && numWords < words.length) 
+		{
 			words[numWords] = input.next();
 			numWords++;
 		}
 		
-		input.close();
+		input.close(); // close scanner
 	}
 	
 	/**	Find all words that can be formed by a list of letters.
@@ -53,7 +58,7 @@ public class WordUtils
 			}
 		}
 		
-		// Convert ArrayList to array
+		// convert arrayList to array
 		String[] result = new String[foundWords.size()];
 		for (int i = 0; i < foundWords.size(); i++) {
 			result[i] = foundWords.get(i);
@@ -62,40 +67,52 @@ public class WordUtils
 		return result;
 	}
 	
-	/**	Check if a word can be formed using the given letters
+	/**	check if a word can be formed using the given letters
+	 *  this method was NOT given
+	 * 
 	 *  @param word		the word to test
 	 *  @param letters	the available letters
 	 *  @return			true if the word can be formed, false otherwise
 	 */
-	private boolean isWordMatch(String word, String letters) {
+	private boolean isWordMatch(String word, String letters) 
+	{
 		String tempLetters = letters.toLowerCase();
 		String lowerWord = word.toLowerCase();
 		
-		for (int i = 0; i < lowerWord.length(); i++) {
+		for (int i = 0; i < lowerWord.length(); i++) 
+		{
 			char c = lowerWord.charAt(i);
 			int index = tempLetters.indexOf(c);
-			if (index == -1) {
+			if (index == -1) 
+			{
 				return false;
 			}
-			// Remove the used letter
-			tempLetters = tempLetters.substring(0, index) + tempLetters.substring(index + 1);
+			
+			// remove used letter
+			tempLetters = tempLetters.substring(0, index) + 
+				tempLetters.substring(index + 1);
 		}
+		
 		return true;
 	}
 	
 	/**	Print the words found to the screen.
 	 *  @param words	array containing the words to be printed
 	 */
-	public void printWords (String [] wordList) { 
+	public void printWords (String [] wordList) 
+	{ 
 		int count = 0;
-		for (String word : wordList) {
+		for (String word : wordList) // will change : formatting
+		{
 			System.out.printf("%-8s", word);
 			count++;
-			if (count % 10 == 0) {
+			if (count % 10 == 0) 
+			{
 				System.out.println();
 			}
 		}
-		if (count % 10 != 0) {
+		if (count % 10 != 0) 
+		{
 			System.out.println();
 		}
 	}
@@ -108,16 +125,19 @@ public class WordUtils
 	 */
 	public String bestWord (String [] wordList, int [] scoreTable)
 	{
-		if (wordList.length == 0) {
+		if (wordList.length == 0) 
+		{
 			return "";
 		}
 		
 		String bestWord = wordList[0];
 		int highestScore = getScore(bestWord, scoreTable);
 		
-		for (String word : wordList) {
+		for (String word : wordList) // will change : formatting
+		{
 			int score = getScore(word, scoreTable);
-			if (score > highestScore) {
+			if (score > highestScore) 
+			{
 				highestScore = score;
 				bestWord = word;
 			}
